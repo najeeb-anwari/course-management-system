@@ -22,7 +22,7 @@ class InstructorFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'position' => $this->faker->jobTitle(),
             'phone_number' => $this->faker->phoneNumber(),
-            'photo_url' => "/files/instructors/photos/avatar-5.jpg",
+            'photo_url' => "",
         ];
     }
 }
