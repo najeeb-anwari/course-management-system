@@ -41,7 +41,7 @@
                                 <!-- Card body -->
                                 <div class="card-body">
                                     <div class="text-center">
-                                        <img src="{{ asset('storage' . $item->photo_url) }}"
+                                        <img src="{{ $item->photo_url ? asset('storage' . $item->photo_url) : '/assets/images/avatar/no-profile-pic.jpg' }}"
                                             class="rounded-circle avatar-xl mb-3" alt="">
                                         <h4 class="mb-0">{{ $item->name }}</h4>
                                         <p class="mb-0">{{ $item->position }}</p>
