@@ -1,6 +1,9 @@
 <?php
 
+use App\Livewire\Instructors\InstructorCreate;
+use App\Livewire\Instructors\InstructorEdit;
 use App\Livewire\Instructors\InstructorList;
+use App\Livewire\Instructors\InstructorView;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +21,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('instructors', InstructorList::class);
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
+    ])->group(function () {
+        Route::get('instructors', InstructorList::class)->name('instructors.index');
+        Route::get('instructors/create', InstructorCreate::class)->name('instructors.create');
+        Route::get('instructors/edit/{instructor}', InstructorEdit::class)->name('instructors.edit');
+        Route::get('instructors/{instructor}', InstructorView::class)->name('instructors.view');
+        Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 });
