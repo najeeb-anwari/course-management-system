@@ -10,6 +10,9 @@ use Livewire\WithPagination;
 class InstructorList extends Component
 {
     use WithPagination;
+
+    public $breadcrumbItems;
+
     public $totalInstructors;
     public $search = "";
 
@@ -24,6 +27,12 @@ class InstructorList extends Component
 
     function mount() {
         $this->totalInstructors = Instructor::count();
+
+        $this->breadcrumbItems = [
+            ['label' => 'Dashboard', 'link' => route('dashboard')],
+            ['label' => 'User', 'link' => '#'],
+            ['label' => 'Instructor'],
+        ];
     }
 
     public function updatingSearch() {

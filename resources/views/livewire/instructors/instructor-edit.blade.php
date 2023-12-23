@@ -10,19 +10,10 @@
                             Edit Instructor
                         </h1>
                         <!-- Breadcrumb  -->
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="/dashboard">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
-                                <li class="breadcrumb-item"><a href="/instructors">{{ __("Instructor") }}</li>
-                                <li class="breadcrumb-item active" aria-current="page">{{ __("Edit") }}</li>
-                            </ol>
-                        </nav>
+                        <livewire:breadcrumb :items="$breadcrumbItems" />
                     </div>
                     <div>
-                        <a href="/instructors" class="btn btn-primary">{{ __("Back to List") }}</a>
+                        <a wire:navigate href="{{ route('instructors.index') }}" class="btn btn-primary">{{ __("Back to List") }}</a>
                     </div>
                 </div>
             </div>

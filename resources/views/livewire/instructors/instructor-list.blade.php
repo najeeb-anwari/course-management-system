@@ -11,18 +11,10 @@
                             <span class="fs-5">{{ $totalInstructors }}</span>
                         </h1>
                         <!-- Breadcrumb  -->
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a wire:navigate href="/dashboard">Dashboard</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{ __("Instructor") }}</li>
-                            </ol>
-                        </nav>
+                        <livewire:breadcrumb :items="$breadcrumbItems" />
                     </div>
                     <div>
-                        <a wire:navigate href="/instructors/create" class="btn btn-primary">{{ __("Add New Instructor") }}</a>
+                        <a wire:navigate href="{{ route('instructors.create') }}" class="btn btn-primary">{{ __("Add New Instructor") }}</a>
                     </div>
                 </div>
             </div>
@@ -51,8 +43,8 @@
 
                                 </div>
                                 <div class="card-footer d-flex justify-content-center gap-1">
-                                    <a wire:navigate href="/instructors/edit/{{ $item->id }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>&nbsp{{ __("Edit") }}</a>
-                                    <a wire:navigate href="./instructors/{{ $item->id }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i>&nbsp{{ __("View") }}</a>
+                                    <a wire:navigate href="{{ route('instructors.edit', $item->id) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>&nbsp{{ __("Edit") }}</a>
+                                    <a wire:navigate href="{{ route('instructors.view', $item->id) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i>&nbsp{{ __("View") }}</a>
                                     <button wire:confirm wire:click="destroy({{ $item->id }})" class="btn btn-sm text-bg-danger"><i class="bi bi-trash"></i>&nbsp{{ __("Delete") }}</a>
                                 </div>
                             </div>

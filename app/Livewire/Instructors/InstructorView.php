@@ -6,10 +6,12 @@ use App\Models\Instructor;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Create Instructor')]
+#[Title('View Instructor')]
 class InstructorView extends Component
 {
     public $instructor;
+
+    public $breadcrumbItems;
 
     public function render()
     {
@@ -19,5 +21,12 @@ class InstructorView extends Component
     public function mount(Instructor $instructor)
     {
         $this->instructor = $instructor;
+
+        $this->breadcrumbItems = [
+            ['label' => 'Dashboard', 'link' => route('dashboard')],
+            ['label' => 'User', 'link' => '#'],
+            ['label' => 'Instructor', 'link' => route('instructors.index')],
+            ['label' => 'View'],
+        ];
     }
 }
