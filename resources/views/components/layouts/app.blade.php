@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="/assets/css/theme.min.css">
 
 
-    <title>{{ $title ?? 'Page Title' }}</title>
+    <title>{{ $title ?? 'Course Management System' }}</title>
 </head>
 
 <body>
@@ -75,10 +75,20 @@
                         <div id="navProfile" class="collapse  show " data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link  active " href="{{ route('instructors.index') }}">Instructor</a>
+                                    <a wire:navigate
+                                        @class([
+                                            'nav-link',
+                                            'active'=> request()->is('instructors'),
+                                            ])
+                                        href="{{ route('instructors.index') }}">{{ __('Instructor') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " href="/students">Students</a>
+                                    <a wire:navigate
+                                    @class([
+                                        'nav-link',
+                                        'active'=> request()->is('students'),
+                                        ])
+                                        href="{{ route('students.index') }}">{{ __('Students') }}</a>
                                 </li>
                             </ul>
                         </div>
