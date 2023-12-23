@@ -75,7 +75,7 @@
                         <div id="navProfile" class="collapse  show " data-bs-parent="#sideNavbar">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link  active " href="/instructors">Instructor</a>
+                                    <a class="nav-link  active " href="{{ route('instructors.index') }}">Instructor</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link " href="/students">Students</a>
