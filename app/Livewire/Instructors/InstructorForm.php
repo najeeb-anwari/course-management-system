@@ -27,7 +27,8 @@ class InstructorForm extends Component
             'father_name' => 'required|string',
             'position' => 'required|string',
             'phone_number' => 'required|string',
-            'email' => 'required|email|unique:instructors,email,' . $this->instructor->id,
+            'email' => 'required|email|unique:instructors,email,' .
+                $this->instructor->id,
             'photo_url' => 'nullable|image|max:2048',
         ];
     }
@@ -61,30 +62,32 @@ class InstructorForm extends Component
 
         if ($this->photo_url) {
             $imagePath = "/public" . $this->instructor->photo_url;
-            if(Storage::exists($imagePath)){
+            if (Storage::exists($imagePath)) {
                 Storage::delete($imagePath);
             }
-            $path ="/files/instructors/photos/";
+            $path = "/files/instructors/photos/";
             $imgName = $this->photo_url->getClientOriginalName();
             $fullPath = $path . $imgName;
-            $this->photo_url->storeAs("/public". $path, $imgName);
+            $this->photo_url->storeAs("/public" . $path, $imgName);
             $this->instructor->photo_url = $fullPath;
         }
         $this->instructor->save();
-        session()->flash('success',
+        session()->flash(
+            'success',
             $this->instructor->wasRecentlyCreated ?
                 'Instructor created successfully.' :
-                'Instructor updated successfully.');
-
-        return redirect()->route('instructors.index');
+                'Instructor updated successfully.'
+        );
+        return $this->redirectRoute('instructors.index', navigate: true);
     }
 
-    function removePic() {
+    function removePic()
+    {
         $this->reset('photo_url');
-        if($this->instructor->photo_url){
-            if(File::exists(public_path($this->instructor->photo_url))){
+        if ($this->instructor->photo_url) {
+            if (File::exists(public_path($this->instructor->photo_url))) {
                 File::delete(public_path($this->instructor->photo_url));
-            }else{
+            } else {
                 dd('File does not exists.');
             }
             $this->instructor->photo_url = null;

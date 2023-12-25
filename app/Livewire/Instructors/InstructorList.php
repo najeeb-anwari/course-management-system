@@ -41,9 +41,8 @@ class InstructorList extends Component
 
     function destroy(Instructor $instructor) {
         $instructor->delete();
-
-        return redirect()->route('instructors.index')
-                        ->with('success','Instructor deleted successfully');
+        session()->flash('success','Instructor deleted successfully');
+        return $this->redirectRoute('instructors.index', navigate: true);
     }
 
 }
