@@ -15,6 +15,7 @@ class Instructor extends Model
         'position',
         'phone_number',
         'email',
-        'photo_url',
+        'photo_path',
+        'photo_name',
     ];
 }
