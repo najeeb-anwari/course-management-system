@@ -3,10 +3,10 @@
 namespace App\Livewire\Instructors;
 
 use App\Models\Instructor;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Illuminate\Support\Str;
 
 class InstructorForm extends Component
 {
@@ -18,7 +18,7 @@ class InstructorForm extends Component
     public $position;
     public $phone_number;
     public $email;
-    public $photo_url;
+    public $photo;
 
     public function rules()
     {
@@ -29,7 +29,7 @@ class InstructorForm extends Component
             'phone_number' => 'required|string',
             'email' => 'required|email|unique:instructors,email,' .
                 $this->instructor->id,
-            'photo_url' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:2048',
         ];
     }
 
@@ -59,17 +59,28 @@ class InstructorForm extends Component
         $this->instructor->phone_number = $this->phone_number;
 
 
-
-        if ($this->photo_url) {
-            $imagePath = "/public" . $this->instructor->photo_url;
-            if (Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+        // if photo is chosen
+        if ($this->photo) {
+            // check if we already have a record
+            if (
+                $this->instructor->photo_path != null &&
+                $this->instructor->photo_name != null
+            ) {
+                $imagePath = "/public" . $this->instructor->photo_path .
+                    $this->instructor->photo_name;
+                if (Storage::exists($imagePath)) {
+                    Storage::delete($imagePath);
+                }
+                $this->photo->storeAs("/public" . $this->instructor->photo_path, $this->instructor->photo_name);
+            } else {
+                // we don't have a photo so set the photo path and name
+                // and store it
+                $path = "/files/photos/instructors/" . Str::uuid()->toString() . "/";
+                $imgName = $this->photo->getClientOriginalName();
+                $this->photo->storeAs("/public" . $path, $imgName);
+                $this->instructor->photo_path = $path;
+                $this->instructor->photo_name = $imgName;
             }
-            $path = "/files/instructors/photos/";
-            $imgName = $this->photo_url->getClientOriginalName();
-            $fullPath = $path . $imgName;
-            $this->photo_url->storeAs("/public" . $path, $imgName);
-            $this->instructor->photo_url = $fullPath;
         }
         $this->instructor->save();
         session()->flash(
@@ -83,14 +94,19 @@ class InstructorForm extends Component
 
     function removePic()
     {
-        $this->reset('photo_url');
-        if ($this->instructor->photo_url) {
-            if (File::exists(public_path($this->instructor->photo_url))) {
-                File::delete(public_path($this->instructor->photo_url));
+        $this->reset('photo');
+        if (
+            $this->instructor->photo_path != null
+        ) {
+            $imagePath = "/public" . $this->instructor->photo_path;
+
+            if (Storage::exists($imagePath)) {
+                Storage::deleteDirectory($imagePath);
             } else {
                 dd('File does not exists.');
             }
-            $this->instructor->photo_url = null;
+            $this->instructor->photo_path = null;
+            $this->instructor->photo_name = null;
             $this->instructor->save();
         }
     }

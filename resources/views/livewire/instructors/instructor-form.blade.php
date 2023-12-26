@@ -36,15 +36,15 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="photo_url" class="form-label">Photo</label>
-                    <input wire:model="photo_url" type="file" class="form-control" id="photo_url">
-                    @error('photo_url') <span class="text-danger">{{ $message }}</span> @enderror
+                    <label for="photo" class="form-label">Photo</label>
+                    <input wire:model="photo" type="file" class="form-control" id="photo">
+                    @error('photo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="mb-3">
-                    @if ($instructor->photo_url || $photo_url)
+                    @if ($instructor->photo_name || $photo)
                         <div style="position: relative; max-width: min-content;">
                             <button type="button" class="badge text-bg-danger rounded-circle" wire:click="removePic()" style="position: absolute; top: 5px; right: 5px;">X</button>
-                            <img class="rounded" style="max-width: 150px" src="{{ $photo_url?->temporaryUrl() ?? asset('storage' . $instructor->photo_url) }}">
+                            <img class="rounded" style="max-width: 150px" src="{{ $photo?->temporaryUrl() ?? asset('storage' . $instructor->photo_path . $instructor->photo_name) }}">
                         </div>
                     @endif
                 </div>

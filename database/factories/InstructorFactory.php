@@ -22,7 +22,8 @@ class InstructorFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'position' => $this->faker->jobTitle(),
             'phone_number' => $this->faker->phoneNumber(),
-            'photo_url' => "",
+            'photo_path' => "",
+            'photo_name' => "",
         ];
     }
 }

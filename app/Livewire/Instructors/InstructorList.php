@@ -3,6 +3,7 @@
 namespace App\Livewire\Instructors;
 
 use App\Models\Instructor;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -40,6 +41,11 @@ class InstructorList extends Component
     }
 
     function destroy(Instructor $instructor) {
+        $imagePath = "/public" . $instructor->photo_path;
+
+        if (Storage::exists($imagePath)) {
+            Storage::deleteDirectory($imagePath);
+        }
         $instructor->delete();
         session()->flash('success','Instructor deleted successfully');
         return $this->redirectRoute('instructors.index', navigate: true);

@@ -25,9 +25,10 @@
                 <div class="card-body">
                     <div class="row ">
                         <div class="col-md-4">
-                            @if ($instructor->photo_url)
+                            @if ($instructor->photo_path)
                                 <img class="rounded-circle" style="max-width: 150px"
-                                    src="{{ asset('storage' . $instructor->photo_url) }}">
+                                    src="{{ asset('storage' . $instructor->photo_path . $instructor->photo_name) }}"
+                                    alt="Instructor photo">
                             @else
                                 <p>{{ __('No photo available') }}</p>
                             @endif
