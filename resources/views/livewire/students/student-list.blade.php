@@ -33,8 +33,8 @@
                                 <!-- Card body -->
                                 <div class="card-body">
                                     <div class="text-center">
-                                        <img src="{{ $item->photo_url ? asset('storage' . $item->photo_url) : '/assets/images/avatar/no-profile-pic.jpg' }}"
-                                            class="rounded-circle avatar-xl mb-3" alt="">
+                                        <img src="{{ $item->photo_path ? asset('storage' . $item->photo_path . $item->photo_name) : '/assets/images/avatar/no-profile-pic.jpg' }}"
+                                            class="rounded-circle avatar-xl mb-3" alt="Student Photo">
                                         <h4 class="mb-0">{{ $item->name }}</h4>
                                         <p class="mb-0">{{ $item->email }}</p>
                                         <p class="mb-0">{{ $item->phone_number }}</p>

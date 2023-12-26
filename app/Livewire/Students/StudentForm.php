@@ -3,10 +3,10 @@
 namespace App\Livewire\Students;
 
 use App\Models\Student;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Illuminate\Support\Str;
 
 class StudentForm extends Component
 {
@@ -17,7 +17,7 @@ class StudentForm extends Component
     public $father_name;
     public $phone_number;
     public $email;
-    public $photo_url;
+    public $photo;
 
     public function rules()
     {
@@ -26,7 +26,7 @@ class StudentForm extends Component
             'father_name' => 'required|string',
             'phone_number' => 'required|string',
             'email' => 'required|email|unique:students,email,' . $this->student->id,
-            'photo_url' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:2048',
         ];
     }
 
@@ -54,38 +54,53 @@ class StudentForm extends Component
 
 
 
-        if ($this->photo_url) {
-            $imagePath = "/public" . $this->student->photo_url;
-            if (Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+        if ($this->photo) {
+            // check if we already have a record
+            if (
+                $this->student->photo_path != null &&
+                $this->student->photo_name != null
+            ) {
+                $imagePath = "/public" . $this->student->photo_path .
+                    $this->student->photo_name;
+                if (Storage::exists($imagePath)) {
+                    Storage::delete($imagePath);
+                }
+                $this->photo->storeAs("/public" . $this->student->photo_path, $this->student->photo_name);
+            } else {
+                // we don't have a photo so set the photo path and name
+                // and store it
+                $path = "/files/photos/students/" . Str::uuid()->toString() . "/";
+                $imgName = $this->photo->getClientOriginalName();
+                $this->photo->storeAs("/public" . $path, $imgName);
+                $this->student->photo_path = $path;
+                $this->student->photo_name = $imgName;
             }
-            $path = "/files/students/photos/";
-            $imgName = $this->photo_url->getClientOriginalName();
-            $fullPath = $path . $imgName;
-            $this->photo_url->storeAs("/public" . $path, $imgName);
-            $this->student->photo_url = $fullPath;
         }
         $this->student->save();
         session()->flash(
             'success',
             $this->student->wasRecentlyCreated ?
-                'student created successfully.' :
-                'student updated successfully.'
+                'Student created successfully.' :
+                'Student updated successfully.'
         );
-
         return $this->redirectRoute('students.index', navigate: true);
     }
 
     function removePic()
     {
-        $this->reset('photo_url');
-        if ($this->student->photo_url) {
-            if (File::exists(public_path($this->student->photo_url))) {
-                File::delete(public_path($this->student->photo_url));
+        $this->reset('photo');
+        if (
+            $this->student->photo_path != null
+        ) {
+            $imagePath = "/public" . $this->student->photo_path;
+
+            if (Storage::exists($imagePath)) {
+                Storage::deleteDirectory($imagePath);
             } else {
                 dd('File does not exists.');
             }
-            $this->student->photo_url = null;
+            $this->student->photo_path = null;
+            $this->student->photo_name = null;
             $this->student->save();
         }
     }

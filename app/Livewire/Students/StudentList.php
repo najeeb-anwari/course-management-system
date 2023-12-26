@@ -3,6 +3,7 @@
 namespace App\Livewire\Students;
 
 use App\Models\Student;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -40,6 +41,11 @@ class StudentList extends Component
     }
 
     function destroy(Student $student) {
+        $imagePath = "/public" . $student->photo_path;
+        if (Storage::exists($imagePath)) {
+            Storage::deleteDirectory($imagePath);
+        }
+
         $student->delete();
 
         session()->flash('success','Student deleted successfully');
