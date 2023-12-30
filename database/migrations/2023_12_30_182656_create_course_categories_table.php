@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('course_categories', function (Blueprint $table) {
             $table->id();
             $table->string('category_name');
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->foreignId('parent_category_id')
+                ->nullable()
                 ->constrained(table:'course_categories',indexName: 'fk_parent_category')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
