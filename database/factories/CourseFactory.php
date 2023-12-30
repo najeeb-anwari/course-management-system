@@ -17,9 +17,9 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence(),
-            'description' => $this->faker->sentences(5),
-            'Fee' => $this->faker->numberBetween(500, 1000),
+            'name' => $this->faker->word(),
+            'description' => $this->faker->paragraph(),
+            'Fee' => $this->faker->numberBetween(1000, 5000),
         ];
     }
 }
