@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\CourseCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,10 +17,12 @@ class CourseFactory extends Factory
      */
     public function definition(): array
     {
+        $courseCategory = CourseCategory::inRandomOrder()->first();
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'Fee' => $this->faker->numberBetween(1000, 5000),
+            'course_category_id' => $courseCategory ? $courseCategory->id : null,
         ];
     }
 }
